@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:expressions/expressions.dart';
+//import 'dart:math';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -33,6 +34,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   
     });
   }
+  int len,expr;
+  evaluate(String str1){
+    setState(() {
+      
+      var expression=Expression.parse(str1);
+      final evaluator = const ExpressionEvaluator();
+      var context={"1":1, "2":2, "3":3, "4":4, "5":5, "6":6, "7":7, "8":8, "9":9, "0":0, };
+      var r = evaluator.eval(expression,context);     
+      show=r.toString();
+      print(r); 
+      
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,16 +58,19 @@ class _MyHomePageState extends State<MyHomePage> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[//text will be displayed. Each row will have 4 flatbuttons.
-          Container(
-            width: double.infinity,
-            child: Text(show,style: TextStyle(fontSize: 28),)
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+                      child: Container(
+              //width: double.infinity,
+              child: Text(show,style: TextStyle(fontSize: 28, color: Colors.black), textAlign: TextAlign.right,)
+            ),
           ),
           Row(//row number 1 
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               FlatButton(onPressed: (){newDigit("C");}, child:Text("C",style: TextStyle(fontSize: 28),)),
               FlatButton(onPressed: (){newDigit("()");}, child:Text("()",style:TextStyle(fontSize: 28),)),
-              FlatButton(onPressed: (){newDigit("%");}, child:Text("%",style: TextStyle(fontSize: 28),)),
+              FlatButton(onPressed: (){newDigit("/100");}, child:Text("%",style: TextStyle(fontSize: 28),)),
               FlatButton(onPressed: (){newDigit("/");}, child:Text("/",style: TextStyle(fontSize: 28),)),
             ],
           ),
@@ -63,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
               FlatButton(onPressed: (){newDigit("7");}, child:Text("7",style: TextStyle(fontSize: 28),)),
               FlatButton(onPressed: (){newDigit("8");}, child:Text("8",style: TextStyle(fontSize: 28),)),
               FlatButton(onPressed: (){newDigit("9");}, child:Text("9",style: TextStyle(fontSize: 28),)),
-              FlatButton(onPressed: (){newDigit("x");}, child:Text("x",style: TextStyle(fontSize: 28),)),
+              FlatButton(onPressed: (){newDigit("*");}, child:Text("x",style: TextStyle(fontSize: 28),)),
             ],
           ),
           Row(//row number 3
@@ -90,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
               FlatButton(onPressed: (){newDigit("-");}, child:Text("+/-",style: TextStyle(fontSize: 28),)),
               FlatButton(onPressed: (){newDigit("0");}, child:Text("0",style: TextStyle(fontSize: 28),)),
               FlatButton(onPressed: (){newDigit(".");}, child:Text(".",style: TextStyle(fontSize: 28),)),
-              FlatButton(onPressed: null, child:Text("=",style: TextStyle(fontSize: 28),)),
+              FlatButton(onPressed: (){evaluate(show);}, child:Text("=",style: TextStyle(fontSize: 28),)),
             ],
           ),
         ],
